@@ -36,13 +36,34 @@
             function data(e) { 
                         const data = e.editor.getData();
                         const finalData = data.replace(/<\/?p[^>]*>/g, "");
+
                         const output = document.getElementById('output1');
-                        output.value = finalData;
+
+                        // output.value = finalData;
+
+                        let strLen = finalData.length;
+                        let revStr = '';
+
+                        for(let i= strLen-1; i>=0 ;i--){
+                             revStr += finalData[i]
+                        }
+                        console.log(revStr)
+                        output.value=revStr
+
+
+                        
+
+
                     }
 
-            CKEDITOR.on('instanceReady', function( evt ) {
-                    evt.editor.on( 'change', data);
-                });
+            // CKEDITOR.on('instanceReady', function( evt ) {
+            //         evt.editor.on( 'change', data);
+            //     });
+            function change( evt ){
+                evt.editor.on('change',data );
+            }
+            CKEDITOR.on('instanceReady',change)
+
             CKEDITOR.replace('editor');
         </script>
         
