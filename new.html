@@ -1,3 +1,10 @@
+<!-- <script src="ckeditor/ckeditor.js"></script>
+<textarea id="editor" name="editor">
+</textarea>
+<script>
+    CKEDITOR.replace('editor');
+</script> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,36 +12,87 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+        #mydiv {
+            display: grid;
+            grid-template-columns: auto auto ;
+        }
+    </style>
+
 </head>
 <body>
+    <div id="mydiv">
+        <script src="ckeditor/ckeditor.js"></script>
 
-    <article class="regular">
-        <h2>Textbox</h2>
+        <!-- <textarea id="editor" name="editor"></textarea> -->
+    
+        <input type="text" id="editor">
+       
+        <script>
+            function data(e) { 
+                        const data = e.editor.getData();
+                        const finalData = data.replace(/<\/?p[^>]*>/g, "");
 
-        <label for="tbuser">Username:</label>
-        <input type="text" id="tbuser" placeholder="enterusername" max length="10">
+                        const output = document.getElementById('output1');
 
-        <input type="button" id="btn1" value="click me">
+                        // output.value = finalData;
+
+                        let strLen = finalData.length;
+                        let revStr = '';
+
+                        for(let i= strLen-1; i>=0 ;i--){
+                             revStr += finalData[i]
+                        }
+                        console.log(revStr)
+                        output.value=revStr
+
+
+                        
+
+
+                    }
+
+            // CKEDITOR.on('instanceReady', function( evt ) {
+            //         evt.editor.on( 'change', data);
+            //     });
+            function change( evt ){
+                evt.editor.on('change',data );
+            }
+            CKEDITOR.on('instanceReady',change)
+
+            CKEDITOR.replace('editor');
+        </script>
+        
+
+        <!-- <textarea class="output" id="output1"></textarea> -->
+        <input type="text" id="output1">
 
         <!-- <p class="output" id="output1"></p> -->
-        <textarea class="output" id="output1">
 
-        </textarea>
+        <!-- <button id='btn1'>
+            Submit
+        </button> -->
 
-    </article>
-    <script>
-        const txt1 = document.getElementById("tbuser");
-        const btn1 = document.getElementById("btn1");
-        const out1 = document.getElementById("output1");
+        <script>
+            // const btn1 = document.getElementById('btn1');
+            // function fun1(){
+            //     const ck = document.getElementById('cke_editor')
+            // .getElementsByTagName('iframe')[0]
+            // .contentDocument.body.innerHTML
+            // }
 
-        function fun1(){
-            out1.innerHTML = txt1.value;
-        }
+           
 
-        btn1.addEventListener('click',fun1);
+            // btn1.addEventListener('click',fun1);
+    
+    
+    
+        </script>
+     
+        
+    </div>
 
-
-    </script>
     
 </body>
 </html>

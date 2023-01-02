@@ -21,6 +21,14 @@
             display: grid;
             grid-template-columns: auto auto ;
         }
+
+        #ckFrame{
+            margin-left:20px;
+            width: 100%;
+            height:400px;
+            border: 1px solid black;
+        }
+
     </style>
 
 </head>
@@ -33,25 +41,58 @@
         <input type="text" id="editor">
        
         <script>
-            function data(e) { 
-                        const data = e.editor.getData();
-                        const finalData = data.replace(/<\/?p[^>]*>/g, "");
+            const iframeOnload = () =>{
+                const iframeStyles = `
+                        <style>
+                            body{
+                                -webkit-user-modify: read-write;
+                                overflow-wrap: break-word;
+                                -webkit-line-break: after-white-space;
+                            }
+                            p {
+                                direction:rtl;
+                            }
+                            </style>
+                                `;
+                const output = document.getElementById('ckFrame');
+                const doc = output.contentDocument;
+			    doc.head.innerHTML = `${iframeStyles}`;
+            }
 
-                        const output = document.getElementById('output1');
+
+            const reverseString = (str) =>{
+                    return str.replace(/[a-zA-Z]+/gm, function(item) {    
+                        return item.split('').reverse().join('');
+                    });
+            }
+            
+
+            function data(e) { 
+                        const output = document.getElementById('ckFrame');
+                        const data = e.editor.getData();
+                        output.srcdoc = reverseString(data);
+		                if (output) {
+			                    const iframeContent = output.contentWindow;
+			                    output.style.height = `${iframeContent?.document.documentElement.scrollHeight}px`;
+                                const p = contentDocument.body.innerHTML;
+                                console.log(p);
+			                    output.style.width = `100%`;
+		                            }
+                        // const finalData = data.replace(/<\/?p[^>]*>/g, "");
+
+                        // const output = document.getElementById('output1');
 
                         // output.value = finalData;
 
-                        let strLen = finalData.length;
-                        let revStr = '';
+                        // let strLen = finalData.length;
+                        // let revStr = '';
 
-                        for(let i= strLen-1; i>=0 ;i--){
-                             revStr += finalData[i]
-                        }
-                        console.log(revStr)
-                        output.value=revStr
+                        // for(let i= strLen-1; i>=0 ;i--){
+                        //      revStr += finalData[i]
+                        // }
+                        // console.log(revStr)
+                        // output.value=revStr
 
-
-                        
 
 
                     }
@@ -69,7 +110,8 @@
         
 
         <!-- <textarea class="output" id="output1"></textarea> -->
-        <input type="text" id="output1">
+        <!-- <input type="text" id="output1"> -->
+        <iframe srcDoc="" id="ckFrame" onload="iframeOnload()" frameborder="0"></iframe>
 
         <!-- <p class="output" id="output1"></p> -->
 
