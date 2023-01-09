@@ -1,13 +1,3 @@
-<!-- <script src="ckeditor/ckeditor.js"></script>
-
-<textarea id="editor" name="editor">
-
-</textarea>
-
-<script>
-    CKEDITOR.replace('editor');
-</script> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,102 +26,95 @@
     <div id="mydiv">
         <script src="ckeditor/ckeditor.js"></script>
 
-        <!-- <textarea id="editor" name="editor"></textarea> -->
+        <textarea id="editor" name="editor" readonly>1234567890abcdefgh</textarea>
     
-        <input type="text" id="editor">
+        <!-- <input type="text" id="editor"> -->
        
         <script>
+
+           
             const iframeOnload = () =>{
                 const iframeStyles = `
                         <style>
                             body{
-                                -webkit-user-modify: read-write;
+                                -webkit-user-modify: read-write; // makes the box read or write
                                 overflow-wrap: break-word;
                                 -webkit-line-break: after-white-space;
                             }
                             p {
-                                direction:rtl;
+                                direction:ltr;   //direction from left ro right 
                             }
                             </style>
                                 `;
                 const output = document.getElementById('ckFrame');
+                // console.log(output)
                 const doc = output.contentDocument;
 			    doc.head.innerHTML = `${iframeStyles}`;
             }
 
+            function reverseSelected(str){
+                return str.split("").reverse().join("");
+                 // console.log(str.split("").reverse().join(""))
 
-            const reverseString = (str) =>{
-                    return str.replace(/[a-zA-Z]+/gm, function(item) {    
-                        return item.split('').reverse().join('');
-                    });
             }
+
+             function selectionText (e){
+                    const select = document.getSelection().toString();
+                    // console.log( select)
+
+
+                    const revSelect = reverseSelected(select)
+
+                    const text = document.getElementById('editor');
+
+                    const target = document.getElementById('ckFrame');
+
+
+                    const currText = text.innerHTML
+
+
+                    const finalText = currText.replace(select, revSelect)
+
+
+                    target.innerHTML = finalText
+
+
+                }
+                // document.addEventListener('selectionchange', selectionText);
+
             
+            // function change( evt ){
+            //     const data= evt.editor.document.$.body.innerHTML;
+            //     const text = evt.editor.document.$.body.innerText;
+               
+            //     const output = document.getElementById('ckFrame');
+            //             // output.srcdoc = reverseString(data);
+            //             output.srcdoc = data
+            //             // console.log(output.srcdoc = text)
+		    //             if (output) {
+			//                     const iframeContent = output.contentWindow;
+			//                     output.style.height = `${iframeContent?.document.documentElement.scrollHeight}px`;
+			//                     output.style.width = `100%`;
+		    //                         }
+            // }
 
-            function data(e) { 
-                        const output = document.getElementById('ckFrame');
-                        const data = e.editor.getData();
-                        output.srcdoc = reverseString(data);
-		                if (output) {
-			                    const iframeContent = output.contentWindow;
-			                    output.style.height = `${iframeContent?.document.documentElement.scrollHeight}px`;
-                                const p = contentDocument.body.innerHTML;
-                                console.log(p);
-			                    output.style.width = `100%`;
-		                            }
-                        // const finalData = data.replace(/<\/?p[^>]*>/g, "");
-
-                        // const output = document.getElementById('output1');
-
-                        // output.value = finalData;
-
-                        // let strLen = finalData.length;
-                        // let revStr = '';
-
-                        // for(let i= strLen-1; i>=0 ;i--){
-                        //      revStr += finalData[i]
-                        // }
-                        // console.log(revStr)
-                        // output.value=revStr
-
-
-
-                    }
-
-            // CKEDITOR.on('instanceReady', function( evt ) {
-            //         evt.editor.on( 'change', data);
-            //     });
-            function change( evt ){
-                evt.editor.on('change',data );
+            function transformedByKey(event){
+                if(event.ctrlKey && event.key ==="e"){
+                    selectionText()
+                }
             }
-            CKEDITOR.on('instanceReady',change)
+            window.addEventListener('keydown', transformedByKey)
+
+            
+            // CKEDITOR.on('instanceReady',change)
 
             CKEDITOR.replace('editor');
         </script>
         
-
-        <!-- <textarea class="output" id="output1"></textarea> -->
-        <!-- <input type="text" id="output1"> -->
-        <iframe srcDoc="" id="ckFrame" onload="iframeOnload()" frameborder="0"></iframe>
-
-        <!-- <p class="output" id="output1"></p> -->
-
-        <!-- <button id='btn1'>
-            Submit
-        </button> -->
+        <!-- <iframe srcDoc="" id="ckFrame" onload="iframeOnload()" frameborder="0"></iframe> -->
+        <p id="ckFrame"></p>
 
         <script>
-            // const btn1 = document.getElementById('btn1');
-            // function fun1(){
-            //     const ck = document.getElementById('cke_editor')
-            // .getElementsByTagName('iframe')[0]
-            // .contentDocument.body.innerHTML
-            // }
-
-           
-
-            // btn1.addEventListener('click',fun1);
-    
-    
     
         </script>
      

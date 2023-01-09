@@ -18,79 +18,138 @@
             display: grid;
             grid-template-columns: auto auto ;
         }
+        #ckFrame{
+            margin-left:20px;
+            width: 100%;
+            height:400px;
+            border: 1px solid black;
+        }
     </style>
 
 </head>
 <body>
     <div id="mydiv">
+
         <script src="ckeditor/ckeditor.js"></script>
 
-        <!-- <textarea id="editor" name="editor"></textarea> -->
+        <textarea id="editor" name="editor" readonly>This is a editor.</textarea>
+
+       
+        <!-- <p id="editor" name="editor" readonly>This is paragrapgh</p> -->
     
-        <input type="text" id="editor">
+        <!-- <input type="text" id="editor"> -->
+
+         <!-- <textarea class="output" id="output1"></textarea> -->
+         <!-- <input type="text" id="output1"> -->
+
+         <!-- <p class="output" id="output1"></p> -->
        
         <script>
-            function data(e) { 
-                        const data = e.editor.getData();
-                        const finalData = data.replace(/<\/?p[^>]*>/g, "");
+            // function data(e) { 
+            //             const data = e.editor.getData();
+            //             console.log(data)
 
-                        const output = document.getElementById('output1');
+            //             const finalData = data.replace(/<\/?p[^>]*>/g, "");
 
-                        // output.value = finalData;
+            //             const output = document.getElementById('output1');
 
-                        let strLen = finalData.length;
-                        let revStr = '';
+            //             output.value = finalData;
 
-                        for(let i= strLen-1; i>=0 ;i--){
-                             revStr += finalData[i]
-                        }
-                        console.log(revStr)
-                        output.value=revStr
+            //             // let strLen = finalData.length;
+            //             // let revStr = '';
 
+            //             // for(let i= strLen-1; i>=0 ;i--){
+            //             //      revStr += finalData[i]
+            //             // }
+            //             // // console.log(revStr)
+            //             // output.value=revStr
 
-                        
-
-
-                    }
+            //         }
 
             // CKEDITOR.on('instanceReady', function( evt ) {
             //         evt.editor.on( 'change', data);
             //     });
+
+
+            const iframeOnload = () =>{
+                const iframeStyles = `
+                        <style>
+                            body{
+                                -webkit-user-modify: read-write; // makes the box read or write
+                                overflow-wrap: break-word;
+                                -webkit-line-break: after-white-space;
+                            }
+                            p {
+                                direction:ltr;   //direction from left ro right 
+                            }
+                            </style>
+                                `;
+                const output = document.getElementById('ckFrame');
+                // console.log(output)
+                const doc = output.contentDocument;
+			    doc.head.innerHTML = `${iframeStyles}`;
+            }
+
+            function reverseStr(str) {
+                return str.split("").reverse().join("");
+                // console.log(str.split("").reverse().join(""))
+            }
+
+
+            function selectionText (e){
+                    const select = window.getSelection().toString();
+
+                    const revSelect = reverseStr(select)
+
+
+                    const text = document.getElementById('editor');
+
+                    const target = document.getElementById('ckFrame');
+
+
+                    const currText = text.innerHTML
+
+
+                    const finalText = currText.replace(select, revSelect)
+
+
+                    target.innerHTML = finalText
+                    // console.log(finalText)
+
+
+                }
+                document.addEventListener('selectionchange', selectionText);
+
+
+
             function change( evt ){
-                evt.editor.on('change',data );
+
+                // evt.editor.on('change',data );
+                const data = evt.editor.document.$.body.innerHTML;
+                // console.log(data)
+                const output = document.getElementById('ckFrame');
+                // console.log(output)
+                output.srcdoc = data
+                   
+                if (output) {
+                        const iframeContent = output.contentWindow;
+                        output.style.height = `${iframeContent?.document.documentElement.scrollHeight}px`;
+                        output.style.width = `100%`;
+		                            }
+
             }
             CKEDITOR.on('instanceReady',change)
 
-            CKEDITOR.replace('editor');
-        </script>
-        
+            // CKEDITOR.replace('editor');
 
-        <!-- <textarea class="output" id="output1"></textarea> -->
-        <input type="text" id="output1">
-
-        <!-- <p class="output" id="output1"></p> -->
-
-        <!-- <button id='btn1'>
-            Submit
-        </button> -->
-
-        <script>
-            // const btn1 = document.getElementById('btn1');
-            // function fun1(){
-            //     const ck = document.getElementById('cke_editor')
-            // .getElementsByTagName('iframe')[0]
-            // .contentDocument.body.innerHTML
-            // }
-
-           
-
-            // btn1.addEventListener('click',fun1);
     
-    
-    
-        </script>
+    </script>
+
+        <!-- <iframe id="ckFrame" onload="iframeOnload()" frameborder="0"></iframe> -->
+        <p id="ckFrame"></p>
+
+
      
-        
     </div>
 
     

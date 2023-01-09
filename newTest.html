@@ -1,0 +1,78 @@
+<html>
+
+<head>
+	<title>Selected Text</title>
+</head>
+
+<body>
+		<h1 style=color:green>
+		Reverese on Click
+	</h1>
+		<script>
+			// Function to get the Selected Text
+            function reverseStr(str) {
+                return str.split("").reverse().join("");
+            }
+
+
+			function getSelectedText() {
+				var selectedText = '';
+
+				// window.getSelection
+				if (window.getSelection) {
+                    selectedText = reverseStr(window.getSelection().toString());
+					// console.log("first" + selectedText)
+				}
+				// document.getSelection
+				else if (document.getSelection) {
+                    selectedText = reverseStr(document.getSelection().toString());
+					// console.log("second" + selectedText)
+				}
+				// document.selection
+				else if (document.selection) {
+					selectedText =reverseStr(document.selection.createRange().text);
+					// console.log("third" + selectedText)
+
+				} else return;
+				// To write the selected text into the textarea
+				document.testform.selectedtext.value = selectedText;
+			}
+
+			function changingKey(event){
+				if(event.ctrlKey && event.key === "e"){
+					getSelectedText()
+				}
+			}
+			window.addEventListener("keydown", changingKey )
+			// document.addEventListener('selectionchange',changingKey)
+
+
+            // document.addEventListener('selectionchange', () => {
+            //         console.log( window.addEventListener("keydown", function(event) {
+            //             if (event.ctrlKey && event.key === "e") {
+            //                 getSelectedText()
+            //             }
+            // }));
+            //     });
+
+
+		</script>
+
+		<p>1234567890abcdefgh</p>
+
+		<!--Button to invoke the
+		function to get the selected text-->
+		<input type="button"
+			value="Get Selection"
+			onmousedown="getSelectedText()">
+		
+		<!--Form to show the selected text as output-->
+		<form name="testform">
+			<textarea name="selectedtext"
+					rows="5"
+					cols="20"></textarea>
+		</form>
+</body>
+
+</html>
+

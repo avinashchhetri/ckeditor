@@ -1,0 +1,51 @@
+<html>
+
+<head>
+	<title>Selected Text</title>
+</head>
+
+<body>
+		<h1 style=color:green>
+		Reverse Text
+	</h1>
+    <p id='text' >1234567890abcdefgh</p>
+        <p id='target'> </p>
+		<script>
+			
+function reverseStr(str) {
+    return str.split("").reverse().join("");
+    console.log(str.split("").reverse().join(""))
+}
+
+function selectionText (e){
+    const select = window.getSelection().toString();
+    const revSelect = reverseStr(select)
+    const text = document.getElementById('text');
+    const target = document.getElementById('target');
+    const currText = text.innerHTML
+    const finalText = currText.replace(select, revSelect)
+    target.innerHTML = finalText
+}
+document.addEventListener('selectionchange', selectionText);
+
+    // document.addEventListener('selectionchange', (e)=>{
+    //  const select = window.getSelection().toString();
+    //  console.log(select)
+
+    //  const revSelect = reverseStr(select);
+
+    //  const text = document.getElementById('text');
+
+    //  const target = document.getElementById('target');
+
+    //  const currText = text.innerText;
+
+    //  const finalText = currText.replace(select,revSelect);
+
+    //  target.innerHTML = finalText;    
+    // });
+		</script>
+		
+</body>
+
+</html>
